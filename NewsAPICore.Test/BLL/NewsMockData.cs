@@ -4,14 +4,18 @@ namespace NewsAPICore.Test.BLL
 {
     public class NewsMockData
     {
-        public static List<NewsModel> GetItemMockData()
+        public static NewsModelList GetItemMockData()
         {
-            List<NewsModel> newsModels = new List<NewsModel>();
+            NewsModelList newsModelList = new NewsModelList();
+            newsModelList.newsModels = new List<NewsModel>();
+            
             NewsModel model = new NewsModel();
             model.title = "News Title";
             model.url = "https://hacker-news.firebaseio.com";
-            newsModels.Add(model);
-            return newsModels;
+
+            newsModelList.newsModels.Add(model);
+            newsModelList.RecordCount = newsModelList.newsModels.Count;
+            return newsModelList;
         }
 
         public static List<string> GetStoriesMockData()

@@ -29,12 +29,12 @@ namespace NewsAPICore.Test.BLL.Services
         {
             //Arrange
 
-            _newsService.Setup(p => p.GetStoriesItem(0,0,"")).ReturnsAsync(NewsMockData.GetItemMockData());
-            List<NewsModel> newsModel = new List<NewsModel>();
+            _newsService.Setup(p => p.GetStoriesItem(0,0,1)).ReturnsAsync(NewsMockData.GetItemMockData());
+            NewsModelList newsModelList = new NewsModelList();
 
             //Act
 
-            var Mockresult = await _newsController.GetStoriesItem(0, 0, "");
+            var Mockresult = await _newsController.GetStoriesItem(0, 0,1);
 
             //Assert
             var okObjectResult = Mockresult as OkObjectResult;
@@ -42,12 +42,12 @@ namespace NewsAPICore.Test.BLL.Services
 
             if (okObjectResult != null && okObjectResult.Value != null)
             {
-                newsModel = (List<NewsModel>)okObjectResult.Value;
+                newsModelList = (NewsModelList)okObjectResult.Value;
             }
 
-            Assert.NotNull(newsModel);
-            Assert.True(newsModel[0].title.Equals("News Title"));
-            Assert.True(newsModel[0].url.Equals("https://hacker-news.firebaseio.com"));
+            Assert.NotNull(newsModelList);
+            Assert.True(newsModelList.newsModels[0].title.Equals("News Title"));
+            Assert.True(newsModelList.newsModels[0].url.Equals("https://hacker-news.firebaseio.com"));
 
         }
     }

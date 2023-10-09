@@ -41,11 +41,11 @@ public class NewsController : ControllerBase
     /// <returns></returns>
 
     [HttpGet("GetStoriesItem")]
-    public async Task<IActionResult> GetStoriesItem(int pageNo,int startPosition, string? searchText)
+    public async Task<IActionResult> GetStoriesItem(int pageNo,int startPosition, int noOfRecords)
     {
         try
         {
-            return Ok(await _newsService.GetStoriesItem(pageNo, startPosition, searchText));
+            return Ok(await _newsService.GetStoriesItem(pageNo, startPosition, noOfRecords));
         }
         catch (Exception e)
         {

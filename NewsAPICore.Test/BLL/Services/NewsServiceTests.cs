@@ -4,7 +4,6 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using NewsAPICore.BLL.Services;
-using NewsAPICore.BLL.Services.IServices;
 using NewsAPICore.BLL.Utilities.AutoMapperProfiles;
 using NewsAPICore.DTO.DTOs;
 using System.Net;
@@ -14,7 +13,6 @@ namespace NewsAPICore.Test.BLL.Services;
 
 public class NewsServiceTests
 {
-    private readonly INewsService _newsService;
     private readonly IMapper _mapper;
     private IOptions<NewsApiURLOptionDTO> _options;
     private readonly IMemoryCache _memoryCache;
@@ -75,7 +73,7 @@ public class NewsServiceTests
     {
         int pageNo = 0;
         int startPosition = 0;
-        string searchText = string.Empty;
+        int NoOfRecords = 0;
         var response = new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new StringContent("It worked!")
@@ -99,8 +97,8 @@ public class NewsServiceTests
         mockFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
         var service = new NewsService(mockFactory.Object, _mapper, _options, _memoryCache);
-        var result = await service.GetStoriesItem(pageNo, startPosition, searchText);
+        NewsModelList result = await service.GetStoriesItem(pageNo, startPosition, NoOfRecords);
         // Assert
-        Assert.Empty(result);
+        Assert.Empty(result.newsModels);
     }
 }

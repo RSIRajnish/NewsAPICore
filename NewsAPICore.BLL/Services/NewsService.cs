@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using NewsAPICore.BLL.Services.IServices;
 using NewsAPICore.DTO.DTOs;
+using System.Reflection;
 using System.Text.Json;
 
 namespace NewsAPICore.BLL.Services;
@@ -45,7 +46,7 @@ public class NewsService : INewsService
         }
         return finalResult;
     }
-        
+           
     /// <summary>
     /// Get news item by id
     /// </summary>
@@ -79,10 +80,12 @@ public class NewsService : INewsService
     /// <param name="IsNewRequest"></param>
     /// <returns></returns>
 
-    public async Task<List<NewsModel>> GetStoriesItem(int pageNo, int startPosition, string searchText)
+    public async Task<NewsModelList> GetStoriesItem(int pageNo, int startPosition, int noOfRecords)
     {
         List<string> finalResult = new List<string>();
-        List<NewsModel> models = new List<NewsModel>();
+        NewsModelList newsModelList = new NewsModelList();
+        newsModelList.newsModels = new List<NewsModel>();
+       
         int endPosition = 10;
         int currentStartPosition = 0;
         if (pageNo > 0)
@@ -90,6 +93,9 @@ public class NewsService : INewsService
             pageNo = pageNo - 1;
         }
         finalResult = await GetStories();
+
+        finalResult = finalResult.Take(noOfRecords).ToList();
+        newsModelList.RecordCount = finalResult.Count;
         currentStartPosition = (((pageNo + pageNo) * 100) + startPosition);
        
         if (finalResult != null)
@@ -105,14 +111,12 @@ public class NewsService : INewsService
                         model = GetNewsContent(id);
                         _memoryCache.Set(id, model, TimeSpan.FromDays(1));
                     }
-                    models.Add(model);
+                    newsModelList.newsModels.Add(model);
                 }
 
             }
         }
-        if (!string.IsNullOrEmpty(searchText))
-        return models.Where(x => x.title.Contains(searchText)).ToList();
-        else
-        return models;
+        return newsModelList;
     }
+
 }

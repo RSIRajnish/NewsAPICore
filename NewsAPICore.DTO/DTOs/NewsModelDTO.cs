@@ -12,4 +12,11 @@ namespace NewsAPICore.DTO.DTOs
         public string url { get; set; }
 
     }
+
+    public class NewsModelList
+    {
+        public IList <NewsModel> newsModels { get; set; }
+        public int RecordCount  { get; set; }
+
+    }
 }

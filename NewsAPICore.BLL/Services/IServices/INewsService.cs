@@ -5,5 +5,5 @@ namespace NewsAPICore.BLL.Services.IServices;
 public interface INewsService
 {
     public Task<List<string>> GetStories();
-    public Task<List<NewsModel>> GetStoriesItem(int pageNo, int startPosition,string searchText);
+    public Task<NewsModelList> GetStoriesItem(int pageNo, int startPosition,int NoOfRecords);
 }
