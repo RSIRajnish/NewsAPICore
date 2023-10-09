@@ -41,7 +41,7 @@ public class NewsController : ControllerBase
     /// <returns></returns>
 
     [HttpGet("GetStoriesItem")]
-    public async Task<IActionResult> GetStoriesItem(int pageNo,int startPosition, int noOfRecords)
+    public async Task<IActionResult> GetStoriesItem(int pageNo=0,int startPosition=0, int noOfRecords=200)
     {
         try
         {
